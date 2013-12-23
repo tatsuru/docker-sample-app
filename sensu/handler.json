@@ -1,0 +1,16 @@
+{
+  "handlers": {
+    "default": {
+      "type": "pipe",
+      "command": "cat > /dev/null"
+    },
+    "graphite": {
+      "type": "tcp",
+      "socket": {
+        "host": "graphite.example.com",
+        "port": 2003
+      },
+      "mutator": "only_check_output"
+    }
+  }
+}

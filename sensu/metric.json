@@ -1,0 +1,40 @@
+{
+  "checks": {
+    "load_metrics": {
+      "type": "metric",
+      "command": "/opt/sensu/embedded/bin/ruby /opt/Sampleapp/current/sensu/plugins/load-metrics.rb --scheme :::name:::",
+      "subscribers": [
+        "all"
+      ],
+      "interval": 10,
+      "handlers": ["graphite"]
+    },
+    "vmstat_metrics": {
+      "type": "metric",
+      "command": "/opt/sensu/embedded/bin/ruby /opt/Sampleapp/current/sensu/plugins/vmstat-metrics.rb --scheme :::name:::.vmstat",
+      "subscribers": [
+        "all"
+      ],
+      "interval": 10,
+      "handlers": ["graphite"]
+    },
+    "cpu_percent_metrics": {
+      "type": "metric",
+      "command": "/opt/sensu/embedded/bin/ruby /opt/Sampleapp/current/sensu/plugins/cpu-pcnt-usage-metrics.rb --scheme :::name:::.cpu",
+      "subscribers": [
+        "all"
+      ],
+      "interval": 10,
+      "handlers": ["graphite"]
+    },
+    "docker_container_metrics": {
+      "type": "metric",
+      "command": "/opt/sensu/embedded/bin/ruby /opt/Sampleapp/current/sensu/plugins/docker-container-metrics.rb --scheme docker.:::name:::",
+      "subscribers": [
+        "docker"
+      ],
+      "interval": 10,
+      "handlers": ["graphite"]
+    }
+  }
+}

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# app start
+export PERL_ROOT=/opt/perl
+export APPROOT=/opt/Sampleapp
+export PERL_CARTON_PATH=$APPROOT/shared
+
+cd $APPROOT/current || exit 1
+
+export ACCESS_LOG=/var/log/app/sampleapp.access_log
+export ERROR_LOG=/var/log/app/sampleapp.error_log
+$PERL_ROOT/bin/carton exec -- plackup -p 8000 \
+    -s Starlet --max-workers=20 --max-reqs-per-child=1000 --min-reqs-per-child=500 \
+    -a $APPROOT/current/app.psgi

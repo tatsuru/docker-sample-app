@@ -1,0 +1,3 @@
+[submodule "sensu/sensu-community-plugins"]
+	path = sensu/sensu-community-plugins
+	url = https://github.com/sensu/sensu-community-plugins.git

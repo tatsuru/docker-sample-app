@@ -1,0 +1,29 @@
+#!/bin/bash
+
+export PATH=/opt/sensu/embedded/bin:/usr/sbin:/sbin:/usr/bin:/bin
+
+ADDR=$( ip addr show eth0 | grep ' \+inet ' | awk '{print $2}' | cut -d/ -f1 | sed -e 's/\./-/g')
+RAND=$(uuidgen | tr -d '-' | cut -c-10)
+HASH=$(uname -n)
+
+if [ ! -z $MESOS_TASK_ID ]; then
+    NAME="Sampleapp."$(echo $MESOS_TASK_ID | sed -e 's/_/./' )
+else
+    NAME="Sampleapp.${HASH}.${ADDR}-${RAND}"
+fi
+
+cat > /etc/sensu/conf.d/client.json <<EOS
+{
+  "client": {
+    "name": "$NAME",
+    "address": "$ADDR",
+    "subscriptions": [
+      "all"
+    ],
+    "cluster": "test"
+  }
+}
+EOS
+
+exec /opt/sensu/embedded/bin/ruby /opt/sensu/bin/sensu-client  -c /etc/sensu/config.json -d /etc/sensu/conf.d -e /etc/sensu/extensions -p /var/run/sensu/sensu-client.pid -L infog
+
